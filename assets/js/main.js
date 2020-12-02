@@ -1,5 +1,5 @@
 const app = document.getElementById('app')
-let element_dummy = document.getElementById('element-wrapper')
+let element_dummy = document.querySelector('.element')
 const distance = 150;
 let lines = []
 
@@ -35,11 +35,15 @@ function drawElement(element) {
 }
 
 /**
- * Draw and create a line
+ * Draw and create line element
  * @param {Object} element
  */
 function drawLine(line) {
-    let newLine = document.createElement('div');
+
+    let lineWrapper = document.createElement('div');
+    lineWrapper.classList.add("line-wrapper");
+    
+    let newLine = document.createElement('div')
     newLine.classList.add("line");
     
     let fromElementLocation = line.from.element.getBoundingClientRect();
@@ -47,24 +51,33 @@ function drawLine(line) {
 
     console.log(fromElementLocation, toElementLocation)
     let from,to;
-    
-    if(line.from.number == 1) from = { x: fromElementLocation.x, y: fromElementLocation.y }
+        console.log(line)
+    if(line.from.number == 1) from = { x: fromElementLocation.x +fromElementLocation.width/2 , y: toElementLocation.y + toElementLocation.height }
     else if(line.from.number == 2) from = { x: fromElementLocation.x + fromElementLocation.width, y: fromElementLocation.y + fromElementLocation.height/2 }
-    else if(line.from.number == 3) from = { x: fromElementLocation.x, y: fromElementLocation.y }
+    else if(line.from.number == 3) from = { x: fromElementLocation.x + fromElementLocation.width/2, y: fromElementLocation.y + fromElementLocation.height }
     else from = { x: toElementLocation.x + toElementLocation.width, y: fromElementLocation.y + fromElementLocation.height/2 }
-
+ 
     if(line.to.number == 1) to = { x: toElementLocation.x, y: toElementLocation.y }
     else if(line.to.number == 2) to = { x: fromElementLocation.x, y: toElementLocation.y }
-    else if(line.to.number == 3) to = { x: toElementLocation.x, y: toElementLocation.y }
+    else if(line.to.number == 3) to = { x: toElementLocation.x + toElementLocation.width/2, y: toElementLocation.y + toElementLocation.height/2-10 }
     else to = { x: toElementLocation.x, y: toElementLocation.y }
 
     console.log(line)
 
-    newLine.style.width = Math.abs(to.x - from.x)+'px';
-    newLine.style.top = from.y+'px';
-    newLine.style.left = from.x+'px';
+    if(["1",'3'].includes(line.from.number)) {
+        lineWrapper.style.height = Math.abs(to.y - from.y)+'px';
+        lineWrapper.classList.add("vertical")
+    }else{
+        lineWrapper.style.width = Math.abs(to.x - from.x)+'px';
+        lineWrapper.classList.add("horizontal")
+    }
+    lineWrapper.style.top = from.y+'px';
+    lineWrapper.style.left = from.x+'px';
 
-    return newLine;
+
+    lineWrapper.appendChild(newLine)
+
+    return lineWrapper;
 }
 document.querySelectorAll('.element').forEach(element => {
     let numbers = element.querySelectorAll('.number');
@@ -119,14 +132,17 @@ function newElement(event, element) {
     });
 }
 
+/**
+ * Create Element Callback
+ * @param Element el 
+ */
 function createElement(el) {
-    console.log('create element, target =>',el)
-
     elements.push({
         x: el.x,
         y: el.y
     });
     let newEl = drawElement(el)
+    newEl.setAttribute("id", `element-${countElement()}`);
     app.appendChild(newEl)
 
     let numbers = newEl.querySelectorAll('.number');
@@ -138,7 +154,10 @@ function createElement(el) {
 }
 function createLine(line) {
     lines.push(line);
-    console.log('newline ',line)
     let newLine = drawLine(line);
     app.appendChild(newLine)
+}
+
+function countElement() {
+    return document.querySelectorAll(".element").length
 }

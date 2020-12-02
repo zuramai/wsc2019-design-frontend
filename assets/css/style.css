@@ -13,9 +13,13 @@
     width: 100px;
     height: 100px;
     border: 2px solid #333;
-    display: flex;
-    flex-wrap: wrap;
-    overflow: hidden;
+    opacity: 0;
+}
+.element#element-1 {
+    opacity: 1;
+}
+.element:not(#element-1) {
+    animation: fadeIn 1s ease-in-out 1s forwards;
 }
 .element .area {
     width: 50%;
@@ -70,7 +74,90 @@
     cursor: pointer;
 }
 .line {
-    height: 2px;
+    height: 100%;
     background-color: #888;
+    margin: 0 auto
+}
+.line-wrapper {
     position: absolute;
+}
+.line-wrapper.vertical {
+    width: 2px
+}
+.line-wrapper.vertical .line{
+    animation: expandVertical 1s forwards;
+    height: 0;
+}
+.line-wrapper.horizontal {
+    height: 2px;
+}
+.line-wrapper.horizontal .line{
+    width: 0;
+    animation: expandHorizontal 1s forwards;
+}
+.area-wrapper {
+    height: 100%;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+.buttons button {
+    z-index: 99;
+    position: absolute;
+    box-shadow: 1px 0px 10px #cecece;
+    border: none;
+    cursor: pointer;
+    transition: all .2s;
+    opacity: 0    
+}
+.element:hover .buttons button {
+    opacity: 1;
+}
+.edit {
+    top: 0;
+    right: 0;
+    transform: translate(-50%, calc(-100% + -10px));
+    padding: 10px;
+    color: #333;
+}
+.edit:hover {
+    background-color: #fffb0f;
+}
+.delete {
+    position: absolute;
+    bottom: 0;
+    z-index: 99;
+    color: #333;
+    left: 0;
+    padding: 10px;
+    transform: translate(40%, calc(100% + 10px)) rotate(0);
+}
+.delete:hover {
+    color: #fff;
+    background-color: red;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+@keyframes expandHorizontal {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+@keyframes expandVertical {
+    0% {
+        height: 0%;
+    }
+    100% {
+        height: 100%;
+    }
 }
