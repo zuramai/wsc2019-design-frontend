@@ -27,7 +27,7 @@
     opacity: 1;
 }
 .element:not(#element-1) {
-    animation: fadeIn 1s ease-in-out 1s forwards;
+    animation: fadeIn 1s ease-in-out forwards;
 }
 .element .area {
     width: 50%;
@@ -144,6 +144,34 @@
 .delete:hover {
     color: #fff;
     background-color: red;
+}
+#modal {
+    position: absolute;
+    background-color: #fff;
+    z-index: 5;
+    padding: 1rem;
+    border-radius: .3rem;
+    min-width: 30rem;
+}
+.form-group {
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
+#modal-wrapper {
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: rgba(0,0,0,.5);
+}
+#modal .button {
+    overflow: hidden;
+}
+#modal .close {
+    float: right;
+    padding: .3rem
 }
 @keyframes fadeIn {
     0% {
