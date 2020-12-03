@@ -1,7 +1,10 @@
 const app = document.getElementById('app')
-let element_dummy = document.querySelector('.element')
+const element_dummy = document.querySelector('.element')
 const distance = 150;
+const canvas = document.getElementById('canvas');
+
 let lines = []
+initCanvas()
 
 let elements = [
     {
@@ -79,9 +82,13 @@ function drawLine(line) {
 
     return lineWrapper;
 }
-document.querySelectorAll('.element').forEach(element => {
+document.querySelectorAll('.element').forEach((element,index) => {
     let numbers = element.querySelectorAll('.number');
+    let edit = element.querySelector(".edit");
 
+    edit.addEventListener("click", (e) => {
+        editContent(e, index);
+    });
     numbers.forEach((number) => {
         number.addEventListener('click', (e) => newElement(e, element));
     });
@@ -160,4 +167,13 @@ function createLine(line) {
 
 function countElement() {
     return document.querySelectorAll(".element").length
+}
+
+function editContent(event, index) {
+    console.log('edit content')
+}
+
+function initCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
