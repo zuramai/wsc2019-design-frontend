@@ -7,18 +7,19 @@ class Elementr extends App {
         this.element = null;
         this.id = 1;
     }
-    init() {
-        this.element = elementDummy;
+    create() {
+        let dummy = elementDummy.cloneNode(true);
+        this.element = dummy;
         this.element.style.left = `${this.x}px`;
         this.element.style.top = `${this.y}px`;
         this.element.style.display = 'flex';
         this.element.setAttribute('id', `element-${this.id}`);
         this.draw();
         this.listener()
-
-        console.log(this)
     }
     draw() {
+        console.log('appendchil;d')
+        console.log(this.element)
         appEl.appendChild(this.element);
     }
     addConnection() {
@@ -27,7 +28,19 @@ class Elementr extends App {
     listener() {
         this.element.querySelectorAll('.number').forEach(number => {
             number.addEventListener('click', (e) => {
-                console.log('number clicked => ',e.target.getAttribute('data-number'));
+                let numberClicked = e.target.getAttribute('data-number');
+                if(this.connections.some(conn => conn.number == this.numberToConnect(numberClicked))) return;
+
+                this.newElement({
+                    element: this.element,
+                    number: numberClicked
+                    },{
+                    number: this.numberToConnect(numberClicked)
+                });
+                this.connections.push({
+                    number: this.numberToConnect(numberClicked),
+                    text: `Go to ${this.numberToConnect(numberClicked)}`
+                })
             });
         });
     }
